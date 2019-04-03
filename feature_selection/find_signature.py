@@ -35,9 +35,26 @@ features_test  = vectorizer.transform(features_test).toarray()
 features_train = features_train[:150].toarray()
 labels_train   = labels_train[:150]
 
+# features_train = features_train[:105].toarray()
+# labels_train   = labels_train[:105]
 
 
 ### your code goes here
+print "Number of records:-", len(features_train)
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+classifier = DecisionTreeClassifier(criterion='entropy', min_samples_split=40)
+classifier.fit(features_train, labels_train)
+pred = classifier.predict(features_test)
+print "accuracy score:- ", accuracy_score(labels_test, pred)
 
+print "No. of feature importances = ", len(classifier.feature_importances_)
+featuresAbove20 = [(i,f) for i,f in enumerate(classifier.feature_importances_) if f > 0.2]
+#print len(featuresAbove20)
+print featuresAbove20
+itemIndexAbove20 = featuresAbove20[0][0]
+print classifier.feature_importances_[itemIndexAbove20]
 
+feature_names = vectorizer.get_feature_names()
+print feature_names[itemIndexAbove20]

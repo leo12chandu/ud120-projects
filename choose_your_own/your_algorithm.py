@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 from prep_terrain_data import makeTerrainData
 from class_vis import prettyPicture
+from time import time
 
 features_train, labels_train, features_test, labels_test = makeTerrainData()
 
@@ -31,11 +32,35 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
+from sklearn.neighbors import KNeighborsClassifier
+clf = KNeighborsClassifier(n_neighbors=3)
+print "KNeighbors Fitting/training with training data"
 
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
+#clf = AdaBoostClassifier(
+#    #DecisionTreeClassifier(criterion='entropy', min_samples_split=40),
+#    DecisionTreeClassifier(max_depth=2),
+#    n_estimators=500
+#    )
 
+#print "Adaboost Fitting/training with training data"
 
+t0 = time()
+clf = clf.fit(features_train, labels_train)
+print "training time:", round(time()-t0, 3), "s"
 
+print "predicting features_test"
+t1 = time()
+pred = clf.predict(features_test)
+print "prediction time:", round(time()-t1, 3), "s"
 
+print "Calculating Accuracy"
+
+#Calculate the accuracy
+from sklearn.metrics import accuracy_score
+acc = accuracy_score(pred, labels_test)
+print acc;
 
 
 try:
